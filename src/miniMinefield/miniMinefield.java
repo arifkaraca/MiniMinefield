@@ -7,6 +7,7 @@ public class miniMinefield {
 	int rowNumber, colNumber, size;
 	int[][] map;
 	int[][] board;
+	boolean game = true;
 	 Random rand = new Random();
 	 Scanner scan = new Scanner(System.in);
 	 
@@ -18,8 +19,57 @@ public class miniMinefield {
 		 this.size = rowNumber * colNumber;
 	 }
  		public void start() {
+ 			int row, col, success = 0;
  			prepareGame();
- 			print(map);
+ 			
+ 			System.out.println("Oyun Başladı !");
+ 			while(game) {
+ 				print(board);
+ 				System.out.println("Satır :");
+ 				row = scan.nextInt();
+ 				System.out.println("Sütun :");
+ 				col = scan.nextInt();
+ 				if((row < 0) || (row >= rowNumber)) {
+ 					System.out.println("Geçersiz Koordinat");
+ 					continue;
+ 				}
+ 				if((col < 0) || (col >= colNumber)) {
+ 					System.out.println("Geçersiz Koordinat");
+ 					continue;
+ 				}
+ 				if(map[row][col] != -1) {
+ 					check(row,col);
+ 					success++;
+ 					 if(success == (size - (size/4))){
+ 						 System.out.println("Başardınız. Hiç Bir Mayına Basmadınız. ");
+ 						 break;
+ 					 }
+ 				}else {
+ 					game = false;
+ 					System.out.println("GAME OVER !");
+ 					print(map);
+ 				}
+ 			}
+ 		}
+ 		public void check(int r, int c) {
+ 			if(map[r][c] == 0) {
+ 			if((c < colNumber - 1) && (map[r][c+1] == -1)) {
+ 				board[r][c]++;
+ 			}
+ 			if((r < rowNumber -3) && (map[r+1][c] == -1)){
+ 				board[r][c]++;
+ 			}
+ 			if((r > 0) && (map[r-1][c] == -1)){
+ 				board[r][c]++;
+ 			}
+ 			if((c > 0) && (map[r][c-1] == -1)){
+ 				board[r][c]++;
+ 			}
+ 			if(board[r][c] == 0 ) {
+ 				board[r][c] = -2;
+ 				
+ 			}
+ 			}
  		}
  		public void prepareGame() {	
  			int randRow, randCol, count = 0;
